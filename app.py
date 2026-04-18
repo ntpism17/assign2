@@ -16,15 +16,16 @@ def load_model():
     return MobileNetV2(weights="imagenet")
 
 # (1) PLEASE load model to model HERE !
-
+model = load_model()
 
 # 3. upload file to streamlit
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # open and upoad file
+    # open and upload file
     img = Image.open(uploaded_file)
-    st.image(img, caption='Uploaded Image', use_container_width=True)
+    # Updated 'use_container_width' to the new 2026 standard 'width="stretch"'
+    st.image(img, caption='Uploaded Image', width="stretch")
 
     st.write("🔄 Classifying...")
 
@@ -35,10 +36,11 @@ if uploaded_file is not None:
     x = preprocess_input(x)
 
     # 5. Prediction
-    # Make the prediction
-    # (1) PLEASE source code HERE !
-    # (2) PLEASE source code HERE !
-
+    # (1) Make the prediction
+    preds = model.predict(x)
+    
+    # (2) Decode the prediction results into a list of top predictions
+    top_preds = decode_predictions(preds, top=3)[0]
 
     # 6. Show the result
     st.subheader("Predictions:")
